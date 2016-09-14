@@ -33,15 +33,18 @@ function hook_scald_extra_modes() {
 This module provides default templates to atoms of type image, file and video.
 
 The default theme can be overrided in your main theme with the following structure:
-	// Every atoms
-  scald-extra-atom.tpl.php
-  // Only atoms of type TYPE
-  scald-extra-atom--TYPE.tpl.php
-  // Only atoms with type TYPE and context CONTEXT
-	scald-extra-atom--TYPE--CONTEXT.tpl.php
+	
+  - Every atoms
+    scald-extra-atom.tpl.php
+  
+  - Only atoms of type TYPE
+    scald-extra-atom--TYPE.tpl.php
+  
+  - Only atoms with type TYPE and context CONTEXT
+	  scald-extra-atom--TYPE--CONTEXT.tpl.php
 
-	- TYPE should be replaced by your atom type ex: file, image, etc;
-	- CONTEXT the key of your contexts array provided in hook_scald_extra_modes;
+	-> TYPE should be replaced by your atom type ex: file, image, etc;
+	-> CONTEXT the key of your contexts array provided in hook_scald_extra_modes;
 
 Filename example: 
 	scald-extra-atom--image--shc-full.tpl.php
