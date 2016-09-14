@@ -1,0 +1,134 @@
+<?php
+
+define('SH_SCALD_YOUTUBE_EMBED', '//www.youtube.com/embed/');
+
+// Functions
+// -----------------------------------------------------------------------------
+
+/**
+ * Implements hook_theme().
+ */
+function scald_extra_theme($existing, $type, $theme, $path) {
+  $themes = array();
+
+  $default = array(
+    'file' => 'theme.inc',
+    'path' => $path . '/theme'
+  );
+
+  $variables = array(
+    'atom' => array()
+  );
+
+  $themes['scald_extra_atom'] = array(
+      'template' => 'scald-extra-atom',
+      'variables' => $variables,
+  ) + $default;
+
+  // Register templates for every atom types
+  foreach (scald_type_get_names() as $key => $name) {
+    $themes['scald_extra_atom__' . $key] = array(
+        'template' => 'scald-extra-atom--' . $key,
+        'variables' => $variables,
+      ) + $default;
+  }
+
+  return $themes;
+}
+
+/**
+ * Implements hook_scald_contexts().
+ */
+function scald_extra_scald_contexts() {
+  $extras = module_invoke_all('scald_extra_modes');
+
+  $contexts = array();
+  foreach ($extras as $key => $context) {
+    $contexts[$key] = array(
+      'title' => $context['title'],
+      'render_language' => 'XHTML',
+      'description' => '',
+      'parseable' => TRUE,
+      'formats' => $context['formats']
+    );
+  }
+
+  return $contexts;
+}
+
+// Alter functions
+// -----------------------------------------------------------------------------
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function scald_extra_theme_registry_alter(&$theme_registry) {
+  $path = drupal_get_path('module', 'scald_extra');
+
+  // Override default legend
+  if (isset($theme_registry['sdl_editor_legend'])) {
+    $theme_registry['sdl_editor_legend']['theme path'] = $path;
+    $theme_registry['sdl_editor_legend']['function'] = 'scald_extra_sdl_editor_legend';
+  }
+
+}
+
+/**
+ * Implements hook_scald_wysiwyg_context_list_alter().
+ */
+function scald_extra_scald_wysiwyg_context_list_alter(&$contexts) {
+  // Only show contexts controlled by scald_extra
+  $used_contexts = scald_extra_scald_contexts();
+
+  foreach ($contexts as $context => $types) {
+    foreach ($types as $key => $type) {
+      if (!array_key_exists($key, $used_contexts)) {
+        unset($contexts[$context][$key]);
+      }
+    }
+  }
+}
+
+// Preprocess functions
+// -----------------------------------------------------------------------------
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function scald_extra_preprocess_mee_widget_embed(&$vars) {
+  global $language;
+
+  // Atom Entity
+  $atom = $vars['atom'];
+
+  // Load file wrapper
+  $atom_wrapper = entity_metadata_wrapper('scald_atom', $atom)->language($language->language);
+
+  // Save atom wrapper in var to be used in other preprocess functions
+  $vars['atom_wrapper'] = $atom_wrapper;
+
+  // Get atom title value
+  $vars['title'] = $atom_wrapper->title->value();
+
+  // Get description value
+  $vars['description'] = $atom_wrapper->scald_description->value();
+
+  // If value provided save it
+  if (!empty($vars['description']['value'])) {
+    $vars['description'] = $vars['description']['safe_value'];
+  }
+
+  // Render entity
+  $vars['content'] = theme('scald_extra_atom__' . $atom->type, $vars);
+}
+
+// Custom Functions
+// -----------------------------------------------------------------------------
+
+/**
+ * Override legend message
+ * @see theme_sdl_editor_legend
+ */
+function scald_extra_sdl_editor_legend(&$vars) {
+  return t('Add a Caption');
+}

@@ -1,0 +1,77 @@
+<?php
+
+/**
+ *
+ * @file
+ * Scald Handler Installation
+ *
+ */
+
+/**
+ * Implements hook_install().
+ */
+function scald_extra_install() {
+  // By default, store format is embed div because of ckeditor compatibility.
+  variable_set('mee_store_format', 'embed_div');
+
+  // Add description field to existing atoms
+  _scald_extra_create_description_field();
+}
+
+/**
+ * Implements hook_enable().
+ */
+function scald_extra_enable() {
+  // Add description field to new atoms
+  _scald_extra_create_description_field();
+}
+
+/**
+ * Create description to store in atoms.
+ */
+function _scald_extra_create_description_field() {
+
+  // Create the scald_description field.
+  if (!field_info_field('scald_description')) {
+    $field = array(
+      'locked' => 0,
+      'module' => 'text',
+      'active' => 1,
+      'cardinality' => 1,
+      'deleted' => 0,
+      'entity_types' => array(),
+      'field_name' => 'scald_description',
+      'translatable' => 1,
+      'type' => 'text_with_summary',
+    );
+    field_create_field($field);
+  }
+
+  // Add description for every atom types
+  foreach (scald_type_get_names() as $key => $name) {
+    $instance = array(
+      'field_name' => 'scald_description',
+      'entity_type' => 'scald_atom',
+      'bundle' => $key,
+      'label' => 'Description',
+      'required' => FALSE,
+      'widget' => array(
+        'weight' => -3,
+        'settings' => array(
+          'rows' => 10
+        ),
+      ),
+      'settings' => array(
+        'text_processing' => 0,
+      ),
+    );
+    if (!field_read_instance($instance['entity_type'], $instance['field_name'], $instance['bundle'])) {
+      field_create_instance($instance);
+      $instance = field_info_instance($instance['entity_type'], $instance['field_name'], $instance['bundle']);
+      foreach ($instance['display'] as $view_mode => $settings) {
+        $instance['display'][$view_mode]['type'] = 'hidden';
+      }
+      field_update_instance($instance);
+    }
+  }
+}
