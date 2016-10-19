@@ -6,6 +6,38 @@ define('SH_SCALD_YOUTUBE_EMBED', '//www.youtube.com/embed/');
 // -----------------------------------------------------------------------------
 
 /**
+ * Implements hook_menu_alter().
+ */
+function scald_extra_menu_alter(&$items) {
+  $file = 'scald_extra.pages.inc';
+  $file_path = drupal_get_path('module', 'scald_extra');
+
+  // Override add form
+  $items['atom/add/%scald_type/%ctools_js']['page callback'] = 'scald_extra_atom_add_page';
+  $items['atom/add/%scald_type/%ctools_js']['file'] = $file;
+  $items['atom/add/%scald_type/%ctools_js']['file path'] = $file_path;
+
+  // Override edit form
+  $items['atom/%scald_atom/edit/%ctools_js']['page callback'] = 'scald_extra_atom_edit_page';
+  $items['atom/%scald_atom/edit/%ctools_js']['file'] = $file;
+  $items['atom/%scald_atom/edit/%ctools_js']['file path'] = $file_path;
+
+  // Override delete confirmation
+  $items['atom/%scald_atom/delete/%ctools_js']['page callback'] = 'scald_extra_atom_delete_confirm_ajax';
+  $items['atom/%scald_atom/delete/%ctools_js']['file'] = $file;
+  $items['atom/%scald_atom/delete/%ctools_js']['file path'] = $file_path;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function scald_extra_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'scald_atom_delete_confirm') {
+    $form['#submit'] = array('scald_extra_atom_delete_confirm_submit');
+  }
+}
+
+/**
  * Implements hook_theme().
  */
 function scald_extra_theme($existing, $type, $theme, $path) {
@@ -54,6 +86,18 @@ function scald_extra_scald_contexts() {
   }
 
   return $contexts;
+}
+
+/**
+ * Implements hook_init().
+ */
+function scald_extra_init() {
+  // Load default scald.pages
+  module_load_include('inc', 'scald', 'includes/scald.pages');
+
+  // Add scald extra js and css files
+  drupal_add_js(drupal_get_path('module', 'scald_extra') . '/scald_extra.js');
+  drupal_add_css(drupal_get_path('module', 'scald_extra') . '/scald_extra.css');
 }
 
 // Alter functions
