@@ -12,6 +12,24 @@ function scald_extra_admin_paths_alter(&$paths) {
   $paths['atom/*/translate'] = FALSE;
   $paths['atom/*/translate/*'] = FALSE;
 }
+
+/**
+ * Implements hook_scald_atom_user_build_actions_links_alter().
+ */
+function scald_extra_scald_atom_user_build_actions_links_alter(&$links, $atom) {
+  if (!module_exists('entity_translation')) {
+    return;
+  }
+
+  $entity_translation_active = entity_translation_enabled('scald_atom', $atom);
+
+  if (scald_action_permitted($atom, 'edit') && $entity_translation_active) {
+    $links['translate'] = array(
+      'title' => t('Translate'),
+      'href' => 'atom/' . $atom->sid . '/translate/nojs'
+    );
+  }
+}
  * Implements hook_menu_alter().
  */
 function scald_extra_menu_alter(&$items) {
