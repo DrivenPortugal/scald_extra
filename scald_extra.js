@@ -28,7 +28,7 @@
     };
 
     $(document).ready(function () {
-        var link_selectors = '.dnd-library-wrapper .add-buttons a, .dnd-library-wrapper .edit a, .dnd-library-wrapper .delete a';
+        var link_selectors = '.dnd-library-wrapper .add-buttons a, .dnd-library-wrapper .edit a, .dnd-library-wrapper .delete a, .dnd-library-wrapper .translate a';
 
         // Remove every events added to links, so we can handle it
         $(document).on('DOMNodeInserted', '.dnd-library-wrapper', function() {
