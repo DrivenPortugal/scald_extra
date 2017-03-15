@@ -11,9 +11,13 @@
 #scald-extra--atom-add-page--modal iframe {
     background-color: white;
     display: block;
-    width: 500px;
-    height: 250px;
+    width: 800px;
+    height: 400px;
     margin: 0 auto;
     margin-top: 200px;
     padding: 20px;
+}
+
+.page-atom-translate-nojs .sticky-header {
+    display: none;
 }
