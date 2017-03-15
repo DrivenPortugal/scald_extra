@@ -1,20 +1,19 @@
 (function($, Drupal) {
     var element_id = 'scald-extra--atom-add-page--modal';
 
+    function remove_element() {
+        var element = document.getElementById(element_id);
+
+        if (element) {
+            element.remove();
+        }
+    }
+
     Drupal.scald_extra = {
         remove_iframe: function () {
-            var parent_element = window.parent.document.getElementById(element_id);
-            var element = document.getElementById(element_id);
+            window.parent.postMessage({message: 'Close Modal', type: 'close'}, location);
 
-            // Remove element if in iframe context
-            if (parent_element) {
-                parent_element.remove();
-            }
-
-            // Remove element if in parent context
-            if (element) {
-                element.remove();
-            }
+            remove_element();
         },
         atom_add_wizard_finish: function () {
             // Refresh atoms view
@@ -28,13 +27,13 @@
     };
 
     $(document).ready(function () {
-        var link_selectors = '.dnd-library-wrapper .add-buttons a, .dnd-library-wrapper .edit a, .dnd-library-wrapper .delete a, .dnd-library-wrapper .translate a';
+        var link_selectors = '.dnd-library-wrapper .add-buttons a, .dnd-library-wrapper .edit a, .dnd-library-wrapper .delete a';
 
         // Remove every events added to links, so we can handle it
         $(document).on('DOMNodeInserted', '.dnd-library-wrapper', function() {
-           window.setTimeout( function () {
-               $(link_selectors).off();
-           }, 0);
+            window.setTimeout( function () {
+                $(link_selectors).off();
+            }, 0);
         });
 
         // Add modal on anchor click with source of anchor href
@@ -54,10 +53,20 @@
             $('body').append(div);
         });
 
-
         // Remove iframe if user clicks on cancel button
         $('#edit-cancel').click(function() {
             Drupal.scald_extra.remove_iframe();
         });
+
+        window.addEventListener('message', function(event) {
+            if (!event.data) {
+                return;
+            }
+
+            if (event.data.type == 'close') {
+                remove_element();
+            }
+        }, false);
+
     });
 }(jQuery, Drupal));
