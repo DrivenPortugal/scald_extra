@@ -6,6 +6,12 @@ define('SH_SCALD_YOUTUBE_EMBED', '//www.youtube.com/embed/');
 // -----------------------------------------------------------------------------
 
 /**
+ * Implements hook_admin_paths_alter().
+ */
+function scald_extra_admin_paths_alter(&$paths) {
+  $paths['atom/*/translate'] = FALSE;
+  $paths['atom/*/translate/*'] = FALSE;
+}
  * Implements hook_menu_alter().
  */
 function scald_extra_menu_alter(&$items) {
