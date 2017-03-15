@@ -30,6 +30,29 @@ function scald_extra_scald_atom_user_build_actions_links_alter(&$links, $atom) {
     );
   }
 }
+
+/**
+ * Implements hook_menu().
+ */
+function scald_extra_menu() {
+  $items = array();
+
+  if (module_exists('entity_translation')) {
+    $items['atom/%scald_atom/translate/nojs'] = array(
+      'title' => 'Atom Translate',
+      'page callback' => 'scald_extra_atom_translate',
+      'page arguments' => array(1),
+      'access callback' => 'scald_action_permitted',
+      'access arguments' => array(1, 'edit'),
+      'type' => MENU_CALLBACK,
+      'file' => 'scald_extra.pages.inc',
+    );
+  }
+
+  return $items;
+}
+
+/**
  * Implements hook_menu_alter().
  */
 function scald_extra_menu_alter(&$items) {

@@ -218,3 +218,20 @@ function scald_extra_atom_add_form_options($form, &$form_state) {
 function scald_extra_atom_add_form_options_submit(&$form, &$form_state) {
   scald_atom_add_form_options_submit($form, $form_state);
 }
+
+/**
+ * Handles the atom translation page.
+ */
+function scald_extra_atom_translate($atom) {
+  module_load_include('inc', 'entity_translation', 'entity_translation.admin');
+
+  $output = entity_translation_overview('scald_atom', $atom);
+
+  print theme('html', array(
+    'page' => array(
+      'page_top' => array(),
+      'page_bottom' => array(),
+      '#children' => drupal_render($output)
+    )
+  ));
+}
