@@ -1,0 +1,23 @@
+#scald-extra--atom-add-page--modal {
+    background: rgba(0,0,0,.7);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1020;
+}
+
+#scald-extra--atom-add-page--modal iframe {
+    background-color: white;
+    display: block;
+    width: 800px;
+    height: 400px;
+    margin: 0 auto;
+    margin-top: 200px;
+    padding: 20px;
+}
+
+.page-atom-translate-nojs .sticky-header {
+    display: none;
+}

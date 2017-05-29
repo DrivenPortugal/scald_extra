@@ -1,0 +1,225 @@
+<?php
+
+define('SH_SCALD_YOUTUBE_EMBED', '//www.youtube.com/embed/');
+
+// Functions
+// -----------------------------------------------------------------------------
+
+/**
+ * Implements hook_admin_paths_alter().
+ */
+function scald_extra_admin_paths_alter(&$paths) {
+  $paths['atom/*/translate'] = FALSE;
+  $paths['atom/*/translate/*'] = FALSE;
+}
+
+/**
+ * Implements hook_scald_atom_user_build_actions_links_alter().
+ */
+function scald_extra_scald_atom_user_build_actions_links_alter(&$links, $atom) {
+  if (!module_exists('entity_translation')) {
+    return;
+  }
+
+  $entity_translation_active = entity_translation_enabled('scald_atom', $atom);
+
+  if (scald_action_permitted($atom, 'edit') && $entity_translation_active) {
+    $links['translate'] = array(
+      'title' => t('Translate'),
+      'href' => 'atom/' . $atom->sid . '/translate/nojs'
+    );
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function scald_extra_menu() {
+  $items = array();
+
+  if (module_exists('entity_translation')) {
+    $items['atom/%scald_atom/translate/nojs'] = array(
+      'title' => 'Atom Translate',
+      'page callback' => 'scald_extra_atom_translate',
+      'page arguments' => array(1),
+      'access callback' => 'scald_action_permitted',
+      'access arguments' => array(1, 'edit'),
+      'type' => MENU_CALLBACK,
+      'file' => 'scald_extra.pages.inc',
+    );
+  }
+
+  return $items;
+}
+
+/**
+ * Implements hook_menu_alter().
+ */
+function scald_extra_menu_alter(&$items) {
+  $file = 'scald_extra.pages.inc';
+  $file_path = drupal_get_path('module', 'scald_extra');
+
+  // Override add form
+  $items['atom/add/%scald_type/%ctools_js']['page callback'] = 'scald_extra_atom_add_page';
+  $items['atom/add/%scald_type/%ctools_js']['file'] = $file;
+  $items['atom/add/%scald_type/%ctools_js']['file path'] = $file_path;
+
+  // Override edit form
+  $items['atom/%scald_atom/edit/%ctools_js']['page callback'] = 'scald_extra_atom_edit_page';
+  $items['atom/%scald_atom/edit/%ctools_js']['file'] = $file;
+  $items['atom/%scald_atom/edit/%ctools_js']['file path'] = $file_path;
+
+  // Override delete confirmation
+  $items['atom/%scald_atom/delete/%ctools_js']['page callback'] = 'scald_extra_atom_delete_confirm_ajax';
+  $items['atom/%scald_atom/delete/%ctools_js']['file'] = $file;
+  $items['atom/%scald_atom/delete/%ctools_js']['file path'] = $file_path;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function scald_extra_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'scald_atom_delete_confirm') {
+    $form['#submit'] = array('scald_extra_atom_delete_confirm_submit');
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function scald_extra_theme($existing, $type, $theme, $path) {
+  $themes = array();
+
+  $default = array(
+    'file' => 'theme.inc',
+    'path' => $path . '/theme'
+  );
+
+  $variables = array(
+    'atom' => array()
+  );
+
+  $themes['scald_extra_atom'] = array(
+      'template' => 'scald-extra-atom',
+      'variables' => $variables,
+  ) + $default;
+
+  // Register templates for every atom types
+  foreach (scald_type_get_names() as $key => $name) {
+    $themes['scald_extra_atom__' . $key] = array(
+        'template' => 'scald-extra-atom--' . $key,
+        'variables' => $variables,
+      ) + $default;
+  }
+
+  return $themes;
+}
+
+/**
+ * Implements hook_scald_contexts().
+ */
+function scald_extra_scald_contexts() {
+  $extras = module_invoke_all('scald_extra_modes');
+
+  $contexts = array();
+  foreach ($extras as $key => $context) {
+    $contexts[$key] = array(
+      'title' => $context['title'],
+      'render_language' => 'XHTML',
+      'description' => '',
+      'parseable' => TRUE,
+      'formats' => $context['formats']
+    );
+  }
+
+  return $contexts;
+}
+
+/**
+ * Implements hook_init().
+ */
+function scald_extra_init() {
+  // Load default scald.pages
+  module_load_include('inc', 'scald', 'includes/scald.pages');
+
+  // Add scald extra js and css files
+  drupal_add_js(drupal_get_path('module', 'scald_extra') . '/scald_extra.js');
+  drupal_add_css(drupal_get_path('module', 'scald_extra') . '/scald_extra.css');
+}
+
+// Alter functions
+// -----------------------------------------------------------------------------
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function scald_extra_theme_registry_alter(&$theme_registry) {
+  $path = drupal_get_path('module', 'scald_extra');
+
+  // Override default legend
+  if (isset($theme_registry['sdl_editor_legend'])) {
+    $theme_registry['sdl_editor_legend']['theme path'] = $path;
+    $theme_registry['sdl_editor_legend']['function'] = 'scald_extra_sdl_editor_legend';
+  }
+
+}
+
+/**
+ * Implements hook_scald_wysiwyg_context_list_alter().
+ */
+function scald_extra_scald_wysiwyg_context_list_alter(&$contexts) {
+  // Only show contexts controlled by scald_extra
+  $used_contexts = scald_extra_scald_contexts();
+
+  foreach ($contexts as $context => $types) {
+    foreach ($types as $key => $type) {
+      if (!array_key_exists($key, $used_contexts)) {
+        unset($contexts[$context][$key]);
+      }
+    }
+  }
+}
+
+// Preprocess functions
+// -----------------------------------------------------------------------------
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function scald_extra_preprocess_mee_widget_embed(&$vars) {
+  global $language;
+
+  // Atom Entity
+  $atom = $vars['atom'];
+
+  // Load file wrapper
+  $atom_wrapper = entity_metadata_wrapper('scald_atom', $atom)->language($language->language);
+
+  // Save atom wrapper in var to be used in other preprocess functions
+  $vars['atom_wrapper'] = $atom_wrapper;
+
+  // Get atom title value
+  $vars['title'] = $atom_wrapper->title->value();
+
+  // Get description value
+  $vars['description'] = $atom_wrapper->scald_description->value();
+
+  // If value provided save it
+  if (!empty($vars['description']['value'])) {
+    $vars['description'] = $vars['description']['safe_value'];
+  }
+
+  // Render entity
+  $vars['content'] = theme('scald_extra_atom__' . $atom->type, $vars);
+}
+
+// Custom Functions
+// -----------------------------------------------------------------------------
+
+/**
+ * Override legend message
+ * @see theme_sdl_editor_legend
+ */
+function scald_extra_sdl_editor_legend(&$vars) {
+  return t('Add a Caption');
+}

@@ -1,0 +1,10 @@
+name = Scald Extra
+description = Scald configuration and extension module.
+core = 7.x
+version = 7.x-1.0
+
+dependencies[] = scald
+dependencies[] = dnd
+dependencies[] = scald_dnd_library
+dependencies[] = atom_reference
+dependencies[] = mee
