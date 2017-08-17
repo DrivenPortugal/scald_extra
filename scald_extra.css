@@ -21,3 +21,217 @@
 .page-atom-translate-nojs .sticky-header {
     display: none;
 }
+
+/* = Atom modal form (add image form) */
+/* ------------------------------------------------------------- */
+.page-atom .wizard-trail {
+    border-bottom: 1px solid #999999;
+    font-size: 0.875rem;
+    margin-bottom: 2rem;
+}
+
+.page-atom .wizard-trail-current {
+    color: #333333;
+}
+
+.page-atom .form-item {
+    margin-bottom: 2rem;
+}
+
+.page-atom .form-item.form-type-checkbox {
+    margin-bottom: 0;
+}
+
+.page-atom .form-item.form-item-file label,
+.page-atom .form-item.form-type-managed-file label {
+    display: block;
+}
+
+.page-atom .form-required {
+    color: #CF2027;
+}
+
+.page-atom label {
+    color: #333333;
+    display: inline-block;
+    font-size: 1.26rem;
+    font-weight: 300;
+}
+.page-atom label.option {
+    font-size: 1rem;
+    margin-left: 0.3125rem;
+}
+
+.page-atom [type="text"],
+.page-atom textarea {
+    background-color: #FFFFFF;
+    border: 1px solid #999999;
+    border-radius: 0.1875rem;
+    color: #333333;
+    font-size: 0.875rem;
+    min-height: 2.5rem;
+    padding: 0.3125rem 0.625rem;
+}
+.page-atom [type="text"]:hover,
+.page-atom textarea:hover {
+    box-shadow: inset 0 2px 2px 0 rgba(0, 0, 0, 0.1);
+    border-color: #D3D3D3;
+}
+
+.page-atom [type="text"]:focus,
+.page-atom textarea:focus {
+    border-color: #3F51B5;
+    outline: none;
+}
+
+.page-atom [type="submit"] {
+    background-color: #F0F0F0;
+    border: 0;
+    border-radius: 0.1875rem;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 0.72937rem;
+    font-weight: 700;
+    margin: 0 0.125rem;
+    padding: 0.3125rem 0.625rem;
+    text-transform: uppercase;
+}
+
+.page-atom [type="submit"]:hover,
+.page-atom [type="submit"]:focus {
+    background-color: #D3D3D3;
+    outline: 0;
+}
+
+.page-atom [type="checkbox"] {
+    border-radius: 0.125rem;
+    height: 1rem;
+    width: 1rem;
+    -webkit-appearance: none;
+    display: inline-block;
+    position: relative;
+    top: 3px;
+    margin-right: 0.25em;
+    padding: 0;
+    background: #FFFFFF;
+    border: 1px solid #999999;
+    outline: none;
+}
+
+.page-atom [type="checkbox"]:hover {
+    border-color: #0074BD;
+    cursor: pointer;
+}
+
+.page-atom [type="checkbox"]:checked {
+    background: #0074BD;
+    box-shadow: inset 0px 0px 0px 0.125rem #FFFFFF;
+}
+
+.page-atom .form-managed-file {
+    border-radius: 0.1875rem;
+    cursor: pointer;
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 0;
+    position: relative;
+}
+
+.page-atom .form-managed-file [type="file"] {
+    max-width: 100%;
+    margin: 0;
+}
+
+.page-atom .form-managed-file [type="submit"] {
+    margin-right: 0; }
+
+.page-atom .description {
+    font-size: 80%;
+}
+
+.page-atom #edit-next,
+.page-atom #edit-cancel {
+    background-color: transparent;
+    border: 0;
+    border-radius: 0.1875rem;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 0.72937rem;
+    font-weight: 700;
+    margin: 0 0.125rem;
+    padding: 0.3125rem 0.625rem;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.page-atom #edit-next {
+    background-color: #43A047;
+    color: #FFFFFF; }
+
+.page-atom #edit-next:hover,
+.page-atom #edit-next:focus {
+    background-color: #3b8e3f;
+}
+
+.page-atom #edit-cancel {
+    background-color: #DF0024;
+    color: #FFFFFF;
+}
+
+.page-atom #edit-cancel:hover,
+.page-atom #edit-cancel:focus {
+    background-color: #c60020;
+}
+
+/* = Atom images styles */
+/* ------------------------------------------------------------- */
+.atom-image {
+    margin-bottom: 1rem;
+}
+
+.atom-image img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 0;
+}
+
+.atom-image .atom__description {
+    background: #F0F0F0;
+    color: #666666;
+    font-size: 0.72937rem;
+    padding: 0.625rem 1.25rem;
+}
+
+/* = Atom fullwidth / Atom teaser images (left, right and center aligned in content) */
+/* ------------------------------------------------------------- */
+.type-image.atom-align-center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (min-width: 768px) {
+    .type-image.atom-align-left,
+    .type-image.atom-align-right,
+    .type-image.atom-align-center {
+        max-width: 50%;
+    }
+
+    .type-image.atom-align-left.context-shc_full,
+    .type-image.atom-align-right.context-shc_full,
+    .type-image.atom-align-center.context-shc_full {
+        float: none;
+        margin-left: 0;
+        margin-right: 0;
+        max-width: initial;
+    }
+
+    .type-image.atom-align-left {
+        float: left;
+        margin-right: 1.5rem;
+    }
+
+    .type-image.atom-align-right {
+        float: right;
+        margin-left: 1.5rem;
+    }
+}
