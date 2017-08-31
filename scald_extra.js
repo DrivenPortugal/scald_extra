@@ -58,15 +58,29 @@
             Drupal.scald_extra.remove_iframe();
         });
 
+      if (window.addEventListener){
         window.addEventListener('message', function(event) {
-            if (!event.data) {
-                return;
-            }
+          if (!event.data) {
+            return;
+          }
 
-            if (event.data.type == 'close') {
-                remove_element();
-            }
+          if (event.data.type == 'close') {
+            remove_element();
+          }
         }, false);
+
+      } else if (window.attachEvent){
+          // To work on IE
+        window.attachEvent('message', function(event) {
+          if (!event.data) {
+            return;
+          }
+
+          if (event.data.type == 'close') {
+            remove_element();
+          }
+        }, false);
+      }
 
     });
 }(jQuery, Drupal));
