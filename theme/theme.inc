@@ -63,6 +63,10 @@ function scald_extra_preprocess_scald_extra_atom__image(&$vars) {
     $vars['url'] = url($url);
   }
 
+  if (!empty($vars['atom']->file_source)) {
+    $vars['image_info'] = image_get_info($vars['atom']->file_source);
+  }
+
   scald_extra_add_suggestion($vars);
 }
 
