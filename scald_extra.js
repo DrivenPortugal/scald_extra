@@ -1,6 +1,20 @@
 (function($, Drupal) {
     var element_id = 'scald-extra--atom-add-page--modal';
 
+    function show_element(href) {
+      var div = $('<div>', {
+        id: element_id,
+        click: function () {
+          Drupal.scald_extra.remove_iframe();
+        }
+      });
+
+      var iframe = $('<iframe>', { src: href });
+
+      div.append(iframe);
+      $('body').append(div);
+    }
+
     function remove_element() {
         var element = document.getElementById(element_id);
 
@@ -40,17 +54,7 @@
         $(document).on('click', link_selectors, function(event) {
             event.preventDefault();
 
-            var div = $('<div>', {
-                id: element_id,
-                click: function () {
-                    Drupal.scald_extra.remove_iframe();
-                }
-            });
-
-            var iframe = $('<iframe>', { src: $(this).attr('href') });
-
-            div.append(iframe);
-            $('body').append(div);
+          show_element($(this).attr('href'));
         });
 
         // Remove iframe if user clicks on cancel button
@@ -67,6 +71,10 @@
           if (event.data.type == 'close') {
             remove_element();
           }
+
+          if (event.data.type == 'show') {
+            show_element(event.data.href);
+          }
         }, false);
 
       } else if (window.attachEvent){
@@ -78,6 +86,10 @@
 
           if (event.data.type == 'close') {
             remove_element();
+          }
+
+          if (event.data.type == 'show') {
+            show_element(event.data.href);
           }
         }, false);
       }

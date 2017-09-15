@@ -180,6 +180,24 @@ function scald_extra_scald_wysiwyg_context_list_alter(&$contexts) {
   }
 }
 
+/**
+ * Implements hook_ckeditor_plugin_alter().
+ */
+function scald_extra_ckeditor_plugin_alter(&$plugins) {
+  // The dndck4 was copied from mee.module v1.9
+  $plugins['dndck4'] = array(
+    'name' => 'dndck4',
+    'desc' => t('Scald Drag and Drop integration - CKEditor 4 widgetssss'),
+    'path' =>  '/' . drupal_get_path('module', 'scald_extra') . '/plugins/dndck4/',
+    'buttons' => array(
+      'ScaldAtom' => array(
+        'icon' => 'icons/atom.png',
+        'label' => t('Edit atom properties'),
+      ),
+    ),
+  );
+}
+
 // Preprocess functions
 // -----------------------------------------------------------------------------
 
