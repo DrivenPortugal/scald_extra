@@ -1,6 +1,8 @@
 <div
     class="atom atom-image atom--context-<?php print $context; ?> atom--align-<?php print $align ?>"
-    style="width: <?php print $atom->base_entity->width; ?>px"
+  <?php if (!empty($image_info['width'])): ?>
+      style="width: <?php print $image_info['width']; ?>px"
+  <?php endif; ?>
 >
   <div class="atom-<?php print $atom->sid ?>">
     <div class="content">
