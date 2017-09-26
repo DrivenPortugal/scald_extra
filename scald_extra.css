@@ -201,37 +201,3 @@
     font-size: 0.72937rem;
     padding: 0.625rem 1.25rem;
 }
-
-/* = Atom fullwidth / Atom teaser images (left, right and center aligned in content) */
-/* ------------------------------------------------------------- */
-.type-image.atom-align-center {
-    margin-left: auto;
-    margin-right: auto;
-}
-
-@media (min-width: 768px) {
-    .type-image.atom-align-left,
-    .type-image.atom-align-right,
-    .type-image.atom-align-center {
-        max-width: 50%;
-    }
-
-    .type-image.atom-align-left.context-shc_full,
-    .type-image.atom-align-right.context-shc_full,
-    .type-image.atom-align-center.context-shc_full {
-        float: none;
-        margin-left: 0;
-        margin-right: 0;
-        max-width: initial;
-    }
-
-    .type-image.atom-align-left {
-        float: left;
-        margin-right: 1.5rem;
-    }
-
-    .type-image.atom-align-right {
-        float: right;
-        margin-left: 1.5rem;
-    }
-}
