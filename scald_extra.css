@@ -182,27 +182,3 @@
 .page-atom #edit-cancel:focus {
     background-color: #c60020;
 }
-
-/* = Atom images styles */
-/* ------------------------------------------------------------- */
-.atom-image {
-    margin-bottom: 1rem;
-    max-width: 100%;
-}
-
-.atom-image img {
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 0;
-}
-
-.atom-image .atom__image-link {
-    display: block;
-}
-
-.atom-image .atom__description {
-    background: #F0F0F0;
-    color: #666666;
-    font-size: 0.72937rem;
-    padding: 0.625rem 1.25rem;
-}
