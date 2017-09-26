@@ -7,14 +7,14 @@
   <div class="atom-<?php print $atom->sid ?>">
     <div class="content">
       <?php if (!empty($url)): ?>
-      <a href="<?php print $url ?>">
-        <?php endif; ?>
+        <a href="<?php print $url ?>" target="<?php print empty($target) ? '_self' : $target ?>">
+      <?php endif; ?>
 
         <img class="img-fluid" alt="<?php print empty($atom->title) ? '' : $atom->title ?>" src="<?php print $src ?>"/>
 
-        <?php if (!empty($url)): ?>
-      </a>
-    <?php endif; ?>
+      <?php if (!empty($url)): ?>
+        </a>
+      <?php endif; ?>
 
       <?php if (!empty($atom->scald_description)): ?>
         <div class="atom__description">
@@ -24,4 +24,3 @@
     </div>
   </div>
 </div>
-

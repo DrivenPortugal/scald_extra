@@ -63,6 +63,11 @@ function scald_extra_preprocess_scald_extra_atom__image(&$vars) {
     $vars['url'] = url($url);
   }
 
+  // Get link target entered by user in atom properties to define link target
+  if (!empty($vars['decoded_options']['linkTarget'])) {
+    $vars['target'] = $vars['decoded_options']['linkTarget'];
+  }
+
   if (!empty($vars['atom']->file_source)) {
     $vars['image_info'] = image_get_info($vars['atom']->file_source);
   }
