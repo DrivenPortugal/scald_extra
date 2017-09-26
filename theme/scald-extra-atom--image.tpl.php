@@ -7,7 +7,7 @@
   <div class="atom-<?php print $atom->sid ?>">
     <div class="content">
       <?php if (!empty($url)): ?>
-        <a href="<?php print $url ?>" target="<?php print empty($target) ? '_self' : $target ?>">
+        <a class="atom__image-link" href="<?php print $url ?>" target="<?php print empty($target) ? '_self' : $target ?>">
       <?php endif; ?>
 
         <img class="img-fluid" alt="<?php print empty($atom->title) ? '' : $atom->title ?>" src="<?php print $src ?>"/>
