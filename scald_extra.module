@@ -210,6 +210,9 @@ function scald_extra_preprocess_mee_widget_embed(&$vars) {
   // Atom Entity
   $atom = $vars['atom'];
 
+  // Load and render entity if this exist
+  if(!isset($atom->file_source)) return;
+
   // Load file wrapper
   $atom_wrapper = entity_metadata_wrapper('scald_atom', $atom)->language($language->language);
 
