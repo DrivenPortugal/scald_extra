@@ -187,7 +187,7 @@ function scald_extra_ckeditor_plugin_alter(&$plugins) {
   // The dndck4 was copied from mee.module v1.9
   $plugins['dndck4'] = array(
     'name' => 'dndck4',
-    'desc' => t('Scald Drag and Drop integration - CKEditor 4 widgetssss'),
+    'desc' => t('Scald Drag and Drop integration - CKEditor 4 widgets'),
     'path' =>  '/' . drupal_get_path('module', 'scald_extra') . '/plugins/dndck4/',
     'buttons' => array(
       'ScaldAtom' => array(
