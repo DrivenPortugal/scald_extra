@@ -210,7 +210,7 @@ function scald_extra_preprocess_mee_widget_embed(&$vars) {
   // Atom Entity
   $atom = $vars['atom'];
 
-  // Load and render entity if this exist
+  // Bail out if entity was not set, otherwise, load and render it
   if(!isset($atom->file_source)) return;
 
   // Load file wrapper
