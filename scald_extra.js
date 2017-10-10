@@ -1,6 +1,21 @@
 (function($, Drupal) {
     var element_id = 'scald-extra--atom-add-page--modal';
 
+    function processImages() {
+      $( ".atom_reference_processed" ).each(function() {
+        var $this = $(this);
+        var match_id = /<!-- scald=(\d+):.*-->/g.exec($this.html());
+        var id = match_id ? match_id[1] : false;
+
+        if (!Drupal.dnd.Atoms[id]) return;
+
+        Drupal.dnd.currentAtom = Drupal.dnd.Atoms[id].sas;
+        delete Drupal.dnd.Atoms[id].contexts;
+
+        $this.trigger('drop');
+      });
+    }
+
     function show_element(href) {
       var div = $('<div>', {
         id: element_id,
@@ -29,10 +44,14 @@
 
             remove_element();
         },
+        update_reference: function () {
+          window.parent.postMessage({message: 'Update Reference', type: 'update_reference'}, location);
+        },
         atom_add_wizard_finish: function () {
             // Refresh atoms view
             if (window.parent && window.parent.Drupal && window.parent.Drupal.dnd) {
                 window.parent.Drupal.dnd.refreshLibraries();
+                Drupal.scald_extra.update_reference();
             }
 
             // Remove iframe
@@ -41,10 +60,10 @@
     };
 
     $(document).ready(function () {
-        var link_selectors = '.dnd-library-wrapper .add-buttons a, .dnd-library-wrapper .edit a, .dnd-library-wrapper .delete a, .dnd-library-wrapper .translate a';
+        var link_selectors = '.dnd-library-wrapper .add-buttons a, .dnd-library-wrapper .edit a, .dnd-library-wrapper .delete a, .dnd-library-wrapper .translate a, .atom_reference_operations .edit a';
 
         // Remove every events added to links, so we can handle it
-        $(document).on('DOMNodeInserted', '.dnd-library-wrapper', function() {
+        $(document).on('DOMNodeInserted', '.dnd-library-wrapper, .atom_reference_operations', function() {
             window.setTimeout( function () {
                 $(link_selectors).off();
             }, 0);
@@ -75,6 +94,10 @@
           if (event.data.type == 'show') {
             show_element(event.data.href);
           }
+
+          if (event.data.type == 'update_reference') {
+            processImages();
+          }
         }, false);
 
       } else if (window.attachEvent){
@@ -90,6 +113,10 @@
 
           if (event.data.type == 'show') {
             show_element(event.data.href);
+          }
+
+          if (event.data.type == 'update_reference') {
+            processImages();
           }
         }, false);
       }
