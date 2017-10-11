@@ -31,11 +31,7 @@
     }
 
     function remove_element() {
-        var element = document.getElementById(element_id);
-
-        if (element) {
-            element.remove();
-        }
+      $('#' + element_id).remove();
     }
 
     Drupal.scald_extra = {
