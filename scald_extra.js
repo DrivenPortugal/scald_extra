@@ -34,7 +34,7 @@
         var element = document.getElementById(element_id);
 
         if (element) {
-          element.parentNode.removeChild(element);
+          $(element).remove();
         }
     }
 
