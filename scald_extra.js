@@ -17,6 +17,10 @@
     }
 
     function show_element(href) {
+      // add a query parameter to the modal url, so the system can be aware he
+      // is inside a modal
+      href += ( href.indexOf('?') >= 0 ? '&' : '?' ) + 'modal=true';
+
       var div = $('<div>', {
         id: element_id,
         click: function () {
