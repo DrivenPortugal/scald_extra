@@ -181,11 +181,13 @@ function scald_extra_scald_wysiwyg_context_list_alter(&$contexts) {
 }
 
 /**
- * Implements hook_ckeditor_plugin_alter().
+ * Implements hook_ckeditor_settings_alter().
+ *
+ * Override the settings
  */
-function scald_extra_ckeditor_plugin_alter(&$plugins) {
+function scald_extra_ckeditor_settings_alter(&$settings, $conf) {
   // The dndck4 was copied from mee.module v1.9
-  $plugins['dndck4'] = array(
+  $settings['loadPlugins']['dndck4'] = array(
     'name' => 'dndck4',
     'desc' => t('Scald Drag and Drop integration - CKEditor 4 widgets'),
     'path' =>  '/' . drupal_get_path('module', 'scald_extra') . '/plugins/dndck4/',
