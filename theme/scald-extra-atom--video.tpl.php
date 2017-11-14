@@ -1,12 +1,14 @@
-<div class="atom atom-video <?php print $align ?>">
+<div
+  class="atom atom-video atom--context-<?php print $context; ?> atom--align-<?php print $align ?>"
+>
   <div class="atom-<?php print $atom->sid ?>">
     <div class="content">
-      <?php if (!empty($youtube)): ?>
+      <?php if (!empty($embed)): ?>
         <iframe
           title="<?php print $title ?>"
           width="<?php print $data['video_width'] ?>"
           height="<?php print $data['video_height'] ?>"
-          src="<?php print $youtube ?>"
+          src="<?php print $embed ?>"
           frameborder="0"
           allowfullscreen="allowfullscreen"
         >

@@ -94,10 +94,15 @@ function scald_extra_preprocess_scald_extra_atom__video(&$vars) {
       $query['rel'] = '0';
     }
     // Create youtube url for iframe
-    $vars['youtube'] = url(SH_SCALD_YOUTUBE_EMBED . $atom->base_id, array(
+    $vars['embed'] = url(SH_SCALD_YOUTUBE_EMBED . $atom->base_id, array(
       'query' => $query,
     ));
-  } else {
+  }
+  else if($atom->provider == 'scald_vimeo') {
+    // Create vimeo url for iframe
+    $vars['embed'] = url(SH_SCALD_VIMEO_EMBED . $atom->base_id);
+  }
+  else {
     $vars['video'] = file_create_url($atom->file_source);
   }
 
