@@ -4,24 +4,30 @@
   <div class="atom-<?php print $atom->sid ?>">
     <div class="content">
       <?php if (!empty($embed)): ?>
-        <iframe
-          title="<?php print $title ?>"
-          width="<?php print $data['video_width'] ?>"
-          height="<?php print $data['video_height'] ?>"
-          src="<?php print $embed ?>"
-          frameborder="0"
-          allowfullscreen="allowfullscreen"
-        >
-        </iframe>
+        <div class="embed-responsive embed-responsive-16by9">
+          <iframe
+            title="<?php print $title ?>"
+            width="<?php print $data['video_width'] ?>"
+            height="<?php print $data['video_height'] ?>"
+            src="<?php print $embed ?>"
+            frameborder="0"
+            allowfullscreen="allowfullscreen"
+            class="embed-responsive-item"
+          >
+          </iframe>
+        </div>
       <?php elseif (!empty($video)): ?>
-        <video
-          title="<?php print $title ?>"
-          width="<?php print $data['video_width'] ?>"
-          height="<?php print $data['video_height'] ?>"
-          controls="controls"
-          src="<?php print $video ?>"
-        >
-        </video>
+        <div class="embed-responsive embed-responsive-16by9">
+          <video
+            title="<?php print $title ?>"
+            width="<?php print $data['video_width'] ?>"
+            height="<?php print $data['video_height'] ?>"
+            controls="controls"
+            src="<?php print $video ?>"
+            class="embed-responsive-item"
+          >
+          </video>
+        </div>
       <?php endif; ?>
     </div>
     <?php if (!empty($description)): ?>
