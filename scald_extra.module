@@ -1,6 +1,7 @@
 <?php
 
 define('SH_SCALD_YOUTUBE_EMBED', '//www.youtube.com/embed/');
+define('SH_SCALD_VIMEO_EMBED', '//player.vimeo.com/video/');
 
 // Functions
 // -----------------------------------------------------------------------------
