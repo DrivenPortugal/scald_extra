@@ -38,7 +38,6 @@
   };
 
   var cache = {}, revertPath = function(value,callback) {
-    // debugger;
     var path = extractPath(value);
     if (!path) {
       return false;
@@ -80,7 +79,6 @@
               // Copy the current options into a new object,
               var options = JSON.parse(widget.data.options);
               var value = this.getValue();
-              debugger;
               if (value != '') {
                 options.link = extractPath(value);
               }
