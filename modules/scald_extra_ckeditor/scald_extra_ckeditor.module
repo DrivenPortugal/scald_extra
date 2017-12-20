@@ -1,0 +1,14 @@
+<?php
+
+/**
+ * Implements hook_scald_wysiwyg_context_list_alter().
+ */
+function scald_extra_ckeditor_scald_wysiwyg_context_list_alter(&$contexts) {
+  // add js to autocomplete
+  drupal_add_js('misc/autocomplete.js');
+  drupal_add_js(array('scald_extra_ckeditor' => array(
+    'autocomplete_path' => url('ckeditor_link/autocomplete'),
+    'revert_path' => url('ckeditor_link/revert'),
+  )), 'setting');
+  drupal_add_js(drupal_get_path('module', 'scald_extra_ckeditor') . '/scald_extra_ckeditor_autocomplete.js');
+}
