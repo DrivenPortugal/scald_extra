@@ -63,8 +63,6 @@
             setup: function (widget) {
               var options = JSON.parse(widget.data.options);
               if (options.link) {
-                // console.log(revertPath(options.link));
-                // this.setValue(revertPath(options.link));
                 var self = this;
                 revertPath(options.link, function (data) {
                   self.setValue(data);
